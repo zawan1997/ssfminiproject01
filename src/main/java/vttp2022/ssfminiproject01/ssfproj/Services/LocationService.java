@@ -93,7 +93,7 @@ public class LocationService {
         }
         //getting items in contact
         JsonObject contact = data.getJsonObject(3);
-        JsonObject jo4 = contact.getJsonObject("contact");
+        JsonObject jo4 = contact.getJsonObject("primaryContactNo");
         list.add(Location.create(jo4));
 
         return list;
