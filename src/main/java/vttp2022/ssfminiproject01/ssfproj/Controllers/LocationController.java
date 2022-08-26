@@ -14,6 +14,7 @@ import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
 @Controller
 public class LocationController {
 
+    //after searching location, user will select choice. checkbox will determine what else to show 
     @Autowired
     private LocationService lSv;
 
