@@ -60,7 +60,7 @@ public class LocationService {
             }
 
             payload = resp.getBody();
-            System.out.println("payload" + payload);
+            //System.out.println("payload" + payload);
 
             mainRepo.save(location, payload);
         } else {
@@ -71,30 +71,33 @@ public class LocationService {
         Reader strReader = new StringReader(payload);
         JsonReader jsonReader = Json.createReader(strReader);
         JsonObject results = jsonReader.readObject();
-        JsonArray data = results.getJsonArray("Data");
+        JsonArray data = results.getJsonArray("data");
+
         // Attempting to get all things that are directly in Data
         List<Location> list = new LinkedList<>();
-        for (int i = 0; i < data.size(); i++) {
-            JsonObject jo = data.getJsonObject(i);
-            list.add(Location.create(jo));
-        }
-        // getting items in reviews
-        JsonArray reviews = data.getJsonArray(2);
-        for (int i = 0; i < reviews.size(); i++) {
-            JsonObject jo2 = reviews.getJsonObject(i);
-            list.add(Location.create(jo2));
-        }
 
-        // getting items in businesshour
-        JsonArray opnclose = data.getJsonArray(11);
-        for (int i = 0; i < opnclose.size(); i++) {
-            JsonObject jo3 = reviews.getJsonObject(i);
-            list.add(Location.create(jo3));
+        for(int i=0;i<data.size();i++)
+        {
+          
+        Location loc = new Location();
+        loc.setName(data.getJsonObject(i).getString("name"));
+        loc.setBody(data.getJsonObject(i).getString("body"));
+        loc.setPrimaryContactNo(data.getJsonObject(i).getJsonObject("contact").getString("primaryContactNo"));
+        loc.setAuthorName(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("authorName"));
+        loc.setOpenTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
+        loc.setCloseTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
+        loc.setText(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("text"));
+        loc.setTime(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("time"));
+        loc.setRating(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getInt("rating"));
+        //loc.setLibraryUuid(data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
+
+
+        list.add(loc);
+
+        //JsonObject locJsonObject = loc.toJson();
+
         }
-        //getting items in contact
-        JsonObject contact = data.getJsonObject(3);
-        JsonObject jo4 = contact.getJsonObject("primaryContactNo");
-        list.add(Location.create(jo4));
+       
 
         return list;
     }

@@ -24,6 +24,6 @@ public class LocationController {
     List<Location> list = lSv.getLocation(keyword);
     model.addAttribute("keyword", keyword);
     model.addAttribute("list", list);
-    return "locationdetails";
+    return "locations";
     }
 }

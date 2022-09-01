@@ -1,5 +1,6 @@
 package vttp2022.ssfminiproject01.ssfproj.Models;
 
+import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
 public class Location {
@@ -13,7 +14,14 @@ public class Location {
     private int rating; //inside array Data>array reviews
     private String authorName; //inside array Data>array reviews
     private String time; //inside array Data>array reviews
+    private String libraryUuid;
 
+    public String getLibraryUuid() {
+        return libraryUuid;
+    }
+    public void setLibraryUuid(String libraryUuid) {
+        this.libraryUuid = libraryUuid;
+    }
     public String getOpenTime() {
         return openTime;
     }
@@ -79,7 +87,15 @@ public class Location {
         loc.setText(jo.getString("text"));
         loc.setTime(jo.getString("time"));
         loc.setRating(jo.getInt("rating"));
+        loc.setLibraryUuid(jo.getString("libraryUuid"));
         return loc;
 
+    }
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+        .add("name", name)
+        .add("body", body)
+        .add("primaryContactNo", primaryContactNo)
+        .build();
     }
 }
