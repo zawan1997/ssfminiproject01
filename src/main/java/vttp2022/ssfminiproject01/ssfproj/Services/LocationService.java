@@ -33,9 +33,24 @@ public class LocationService {
     @Autowired
     private MainRepo mainRepo;
 
-    // All other API contents will load only when selected but not save
-    // only thing to be saved is location
-    // key value pair will remain (location,contents)
+    public List<Location> getLocationWithName(String location, String userID) {
+        if(userID.length()>0)
+        {
+            String userName = userID;
+            if(!mainRepo.isLoggedInUser(userName)) {
+                System.out.println("User is not User" +userName);
+                return null;
+            }
+            else {
+                System.out.println("User is valid" + userName);
+                return getLocation(location);
+            }
+        }
+        else {
+            return getLocation(location);
+        }
+    }
+
 
     public List<Location> getLocation(String location) {
 
@@ -84,8 +99,8 @@ public class LocationService {
         loc.setBody(data.getJsonObject(i).getString("body"));
         loc.setPrimaryContactNo(data.getJsonObject(i).getJsonObject("contact").getString("primaryContactNo"));
         loc.setAuthorName(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("authorName"));
-        loc.setOpenTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
-        loc.setCloseTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
+        //loc.setOpenTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
+        //loc.setCloseTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
         loc.setText(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("text"));
         loc.setTime(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("time"));
         loc.setRating(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getInt("rating"));
