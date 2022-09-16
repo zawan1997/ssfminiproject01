@@ -8,7 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
+import vttp2022.ssfminiproject01.ssfproj.Models.Location;
+
 
 @Repository
 public class MainRepo {
@@ -17,19 +18,42 @@ public class MainRepo {
     @Qualifier("redislab")
     private RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
 
-    public void save(String location, String payload) {
+    //saving the Location UUID as the key 
+    public void saveLocation(String locationUuid, String payload) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
-        valueOp.set(location.toLowerCase(), payload);
+        valueOp.set(locationUuid.toString().toLowerCase(), payload);
     }
 
-    public Optional<String> get(String location) {
+    public String getLocation(String locationUuid) {
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
-        String value = valueOp.get(location.toLowerCase());
+        String value = valueOp.get(locationUuid.toString().toLowerCase());
         if (null == value) {
-            return Optional.empty();
+            return null;
         }
-        return Optional.of(value);
+        return value;
+    }
+    public void saveUserLocationMap(String userid, String locationUuid, String payload) {
+
+        ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
+        // if this userid already in redis then get the locationId and append the new ID and save back.
+        String value = valueOp.get(userid.toString().toLowerCase());
+        if(value == null)
+            valueOp.set(userid.toString().toLowerCase(), locationUuid.toString().toLowerCase());
+        else
+        {
+            value = value + "," + locationUuid.toString().toLowerCase();
+            valueOp.set(userid.toString().toLowerCase(), value);
+        }
+
+        saveLocation(locationUuid, payload);
+    }
+
+    public String getUserLocationMap(String userid) {
+
+        ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
+        String value = valueOp.get(userid.toString().toLowerCase());
+        return value;
     }
 
     public boolean saveUser(String userID, String password) {

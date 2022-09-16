@@ -2,10 +2,13 @@ package vttp2022.ssfminiproject01.ssfproj.Services;
 
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +36,9 @@ public class LocationService {
     @Autowired
     private MainRepo mainRepo;
 
-    public List<Location> getLocationWithName(String location, String userID) {
+    private Map<String, String> locationMap = null;
+
+    public List<Location> saveLocationtoList(String location, String userID) {
         if(userID.length()>0)
         {
             String userName = userID;
@@ -52,12 +57,66 @@ public class LocationService {
     }
 
 
+    public boolean saveLocationForUser(String userID, String locationUuid) {
+        if(userID.length()>0)
+        {
+           if(!mainRepo.isLoggedInUser(userID)) {
+                System.out.println("User is not User" +userID);
+                return false;
+            }
+            else {
+                System.out.println("User is valid" + userID);
+                String payload = locationMap.get(locationUuid);
+                mainRepo.saveUserLocationMap(userID, locationUuid, payload);
+                return true;
+            }
+        }
+        else {
+            return false ;
+        }
+    }
+
+    public List<Location> getLocationPerUser(String userID) {
+        List<Location> list = new LinkedList<>();
+       
+        String  locationIDListStr = mainRepo.getUserLocationMap(userID);
+        String[] locationList = locationIDListStr.split("[,]",0);
+       
+        // we need to split this locationID list by comma
+        for(String locationUuid: locationList)
+        {
+            String payload = mainRepo.getLocation(locationUuid);
+            Location loc = new Location();
+            Reader strReader = new StringReader(payload);
+            JsonReader jsonReader = Json.createReader(strReader);
+            JsonObject results = jsonReader.readObject();
+            loc.setName(results.getString("name"));
+            
+         
+            loc.setBody(results.getString("body"));
+            loc.setPrimaryContactNo(results.getJsonObject("contact").getString("primaryContactNo"));
+            loc.setAuthorName(results.getJsonArray("reviews").getJsonObject(0).getString("authorName"));
+            loc.setOpenTime(results.getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
+            loc.setCloseTime(results.getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
+            loc.setText(results.getJsonArray("reviews").getJsonObject(0).getString("text"));
+            loc.setTime(results.getJsonArray("reviews").getJsonObject(0).getString("time"));
+            loc.setRating(results.getJsonArray("reviews").getJsonObject(0).getInt("rating"));
+            loc.setLibraryUuid(results.getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
+            list.add(loc);
+        }
+       
+        return list;
+    }
+
+
     public List<Location> getLocation(String location) {
 
-        Optional<String> opt = mainRepo.get(location);
+        //Only getting in the saved items page
+        //Optional<String> opt = mainRepo.get(location);
         String payload;
+        locationMap = new HashMap<>();
 
-        if (opt.isEmpty()) {
+        // if (opt.isEmpty()) {
             System.out.println("Getting fresh from Location API");
             String url = UriComponentsBuilder.fromUriString(URL)
                     .queryParam("keyword", location)
@@ -77,10 +136,10 @@ public class LocationService {
             payload = resp.getBody();
             //System.out.println("payload" + payload);
 
-            mainRepo.save(location, payload);
-        } else {
-            payload = opt.get();
-        }
+        //     mainRepo.save(location, payload);
+        // } else {
+        //     payload = opt.get();
+        // }
 
         // Wanted properties are in different parts of the Json File
         Reader strReader = new StringReader(payload);
@@ -96,6 +155,7 @@ public class LocationService {
           
         Location loc = new Location();
         loc.setName(data.getJsonObject(i).getString("name"));
+        loc.setUuid(data.getJsonObject(i).getString("uuid"));
         loc.setBody(data.getJsonObject(i).getString("body"));
         loc.setPrimaryContactNo(data.getJsonObject(i).getJsonObject("contact").getString("primaryContactNo"));
         loc.setAuthorName(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("authorName"));
@@ -108,6 +168,10 @@ public class LocationService {
 
 
         list.add(loc);
+
+        String locationUuid = data.getJsonObject(i).getString("uuid");
+        String payLoadPerLocation =  data.getJsonObject(i).toString();
+        locationMap.put(locationUuid, payLoadPerLocation);
 
         //JsonObject locJsonObject = loc.toJson();
 

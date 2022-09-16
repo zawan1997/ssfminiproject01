@@ -15,7 +15,14 @@ public class Location {
     private String authorName; //inside array Data>array reviews
     private String time; //inside array Data>array reviews
     private String libraryUuid;
+    private String uuid; //Key to save the location
 
+    public String getUuid() {
+        return uuid;
+    }
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
     public String getLibraryUuid() {
         return libraryUuid;
     }

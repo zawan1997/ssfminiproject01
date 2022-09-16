@@ -7,17 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    <form action = "/places/saveLocPerUser" method="get">
    <div data-th-each="k:${list}">
 
     <br>
     <strong data-th-text="${k.name}"></strong>
-   
-    <input type="hidden" name="uuid" value = "${k.uuid}"><input>
-    <button type="submit" > Save </button>
     <br>
     <br>
-    <!--span data-th-text="${k.body}"></span-->
+    <span data-th-text="${k.body}"></span>
     <br>
     <br>
     <span data-th-text="${k.text}"></span>
@@ -26,6 +22,5 @@
     <br>
     <span data-th-text="${k.rating}"></span>
    </div>
-</form>
 </body>
 </html>
