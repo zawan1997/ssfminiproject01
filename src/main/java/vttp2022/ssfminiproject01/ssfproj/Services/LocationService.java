@@ -2,13 +2,13 @@ package vttp2022.ssfminiproject01.ssfproj.Services;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 //import java.util.Optional;
 import java.util.Map;
+//import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,8 +91,6 @@ public class LocationService {
             JsonReader jsonReader = Json.createReader(strReader);
             JsonObject results = jsonReader.readObject();
             loc.setName(results.getString("name"));
-            
-         
             loc.setBody(results.getString("body"));
             loc.setPrimaryContactNo(results.getJsonObject("contact").getString("primaryContactNo"));
             loc.setAuthorName(results.getJsonArray("reviews").getJsonObject(0).getString("authorName"));
@@ -159,12 +157,46 @@ public class LocationService {
         loc.setBody(data.getJsonObject(i).getString("body"));
         loc.setPrimaryContactNo(data.getJsonObject(i).getJsonObject("contact").getString("primaryContactNo"));
         loc.setAuthorName(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("authorName"));
-        //loc.setOpenTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
-        //loc.setCloseTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
+        loc.setOpenTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
+        loc.setCloseTime(data.getJsonObject(i).getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
         loc.setText(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("text"));
         loc.setTime(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("time"));
         loc.setRating(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getInt("rating"));
-        //loc.setLibraryUuid(data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
+        loc.setLibraryUuid(data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
+
+        if (loc.getName().equals(" ")) {
+            return null;
+        }
+        if (loc.getUuid().equals(" ")) {
+            return null;
+        }
+        if (loc.getBody().equals(" ")) {
+            return null;
+        }
+        if (loc.getPrimaryContactNo().equals(" ")) {
+            return null;
+        }
+        if (loc.getAuthorName().equals(" ")) {
+            return null;
+        }
+        if (loc.getOpenTime().equals(" ")) {
+            return null;
+        }
+        if (loc.getCloseTime().equals(" ")) {
+            return null;
+        }
+        if (loc.getText().equals(" ")) {
+            return null;
+        }
+        if (loc.getTime().equals(" ")) {
+            return null;
+        }
+        if (loc.getRating() <0) {
+            return null;
+        }
+        if (loc.getLibraryUuid().equals(" ")) {
+            return null;
+        }
 
 
         list.add(loc);

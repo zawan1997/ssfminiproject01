@@ -1,6 +1,6 @@
 package vttp2022.ssfminiproject01.ssfproj.Repositories;
 
-import java.util.Optional;
+//import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
-import vttp2022.ssfminiproject01.ssfproj.Models.Location;
+//import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 
 
 @Repository
