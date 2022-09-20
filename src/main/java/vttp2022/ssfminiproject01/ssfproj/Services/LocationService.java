@@ -39,52 +39,44 @@ public class LocationService {
     private Map<String, String> locationMap = null;
 
     public List<Location> saveLocationtoList(String location, String userID) {
-        if(userID.length()>0)
-        {
+        if (userID.length() > 0) {
             String userName = userID;
-            if(!mainRepo.isLoggedInUser(userName)) {
-                System.out.println("User is not User" +userName);
+            if (!mainRepo.isLoggedInUser(userName)) {
+                System.out.println("User is not User" + userName);
                 return null;
-            }
-            else {
+            } else {
                 System.out.println("User is valid" + userName);
                 return getLocation(location);
             }
-        }
-        else {
+        } else {
             return getLocation(location);
         }
     }
 
-
     public boolean saveLocationForUser(String userID, String locationUuid) {
-        if(userID.length()>0)
-        {
-           if(!mainRepo.isLoggedInUser(userID)) {
-                System.out.println("User is not User" +userID);
+        if (userID.length() > 0) {
+            if (!mainRepo.isLoggedInUser(userID)) {
+                System.out.println("User is not User" + userID);
                 return false;
-            }
-            else {
+            } else {
                 System.out.println("User is valid" + userID);
                 String payload = locationMap.get(locationUuid);
                 mainRepo.saveUserLocationMap(userID, locationUuid, payload);
                 return true;
             }
-        }
-        else {
-            return false ;
+        } else {
+            return false;
         }
     }
 
     public List<Location> getLocationPerUser(String userID) {
         List<Location> list = new LinkedList<>();
-       
-        String  locationIDListStr = mainRepo.getUserLocationMap(userID);
-        String[] locationList = locationIDListStr.split("[,]",0);
-       
+
+        String locationIDListStr = mainRepo.getUserLocationMap(userID);
+        String[] locationList = locationIDListStr.split("[,]", 0);
+
         // we need to split this locationID list by comma
-        for(String locationUuid: locationList)
-        {
+        for (String locationUuid : locationList) {
             String payload = mainRepo.getLocation(locationUuid);
             Location loc = new Location();
             Reader strReader = new StringReader(payload);
@@ -102,10 +94,9 @@ public class LocationService {
             loc.setLibraryUuid(results.getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
             list.add(loc);
         }
-       
+
         return list;
     }
-
 
     public List<Location> getLocation(String location) {
 
@@ -147,7 +138,7 @@ public class LocationService {
 
         // Attempting to get all things that are directly in Data
         List<Location> list = new LinkedList<>();
-
+//  try {
         for(int i=0;i<data.size();i++)
         {
           
@@ -163,54 +154,61 @@ public class LocationService {
         loc.setTime(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getString("time"));
         loc.setRating(data.getJsonObject(i).getJsonArray("reviews").getJsonObject(0).getInt("rating"));
         loc.setLibraryUuid(data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
-
-        if (loc.getName().equals(" ")) {
-            return null;
-        }
-        if (loc.getUuid().equals(" ")) {
-            return null;
-        }
-        if (loc.getBody().equals(" ")) {
-            return null;
-        }
-        if (loc.getPrimaryContactNo().equals(" ")) {
-            return null;
-        }
-        if (loc.getAuthorName().equals(" ")) {
-            return null;
-        }
-        if (loc.getOpenTime().equals(" ")) {
-            return null;
-        }
-        if (loc.getCloseTime().equals(" ")) {
-            return null;
-        }
-        if (loc.getText().equals(" ")) {
-            return null;
-        }
-        if (loc.getTime().equals(" ")) {
-            return null;
-        }
-        if (loc.getRating() <0) {
-            return null;
-        }
-        if (loc.getLibraryUuid().equals(" ")) {
-            return null;
-        }
-
-
         list.add(loc);
-
         String locationUuid = data.getJsonObject(i).getString("uuid");
         String payLoadPerLocation =  data.getJsonObject(i).toString();
         locationMap.put(locationUuid, payLoadPerLocation);
+        }
+
+    //  }catch (Exception ex){ 
+    //         System.err.printf("Error: %s\n", ex.getMessage());
+    //         return Collections.emptyList();
+    //     } 
+
+        // //
+        // if (loc.getName().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getUuid().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getBody().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getPrimaryContactNo().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getAuthorName().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getOpenTime().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getCloseTime().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getText().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getTime().equals(" ")) {
+        //     return null;
+        // }
+        // if (loc.getRating() <0) {
+        //     return null;
+        // }
+        // if (loc.getLibraryUuid().equals(" ")) {
+        //     return null;
+        // }
+
+
+        
+       
 
         //JsonObject locJsonObject = loc.toJson();
 
-        }
-       
+        
 
-        return list;
-    }
+    return list;
+}
 
 }
