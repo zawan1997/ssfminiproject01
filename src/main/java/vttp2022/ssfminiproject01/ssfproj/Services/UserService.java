@@ -47,6 +47,13 @@ public class UserService {
         System.out.println("User Valid?" + isValid);
         return isValid;
     }
+    public String getUserID(String userData) {
+
+        JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
+        UserLoginRequest req = UserLoginRequest.create(jo);
+
+        return req.getUserID();
+    }
 
     public boolean logout(String userID) {
         boolean loggingOut = mRepo.logoutUser(userID);

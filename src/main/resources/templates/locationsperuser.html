@@ -7,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
+
+    <a href="searchwithuser.html">Search</a>
+
+    <form method="GET" action ="/getLocPerUser">
    <div data-th-each="k:${list}">
 
     <br>
@@ -22,5 +26,6 @@
     <br>
     <span data-th-text="${k.rating}"></span>
    </div>
+</form>
 </body>
 </html>

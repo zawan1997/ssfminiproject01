@@ -1,6 +1,9 @@
 package vttp2022.ssfminiproject01.ssfproj.Controllers;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +25,22 @@ public class UserController {
     public String createUser(Model model, @RequestBody String userData) {
         boolean res = uSvc.createUser(userData);
         if(res){
-            return "UserResponseRegister";
+            return "redirect:/index";
         } else {
             return "UserResponseRegisterFail";
         }
     }
 
+    //if login success, redirect to search page with saved locations hyperlink. If fail, redirect to login page again
     @PostMapping("/login")
-    public String loginUser(Model model, @RequestBody String userData) {
+    public String loginUser(Model model, @RequestBody String userData, HttpServletRequest  request) {
         boolean isValid = uSvc.login(userData);
 
         if(isValid) {
-            return "UserResponseSuccess";
+            request.getSession().setAttribute("userid", uSvc.getUserID(userData));
+            return "searchwithuser";
         }
-        return "UserResponseFailure";
+        return "redirect:/login";
     }
     
     @GetMapping("/logout")
@@ -43,7 +48,7 @@ public class UserController {
         boolean isValid = uSvc.logout(userID);
         
         if(isValid)
-            return "UserLogoutSuccess";
+            return "redirect:/index";
         return "UserLogoutFailure";
     }
 }
