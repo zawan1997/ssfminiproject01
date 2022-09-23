@@ -12,23 +12,28 @@
 
     <br>
     <strong data-th-text="${k.name}"></strong>
-   
-   
-    <button type="submit" > Save </button>
     <br>
     <br>
+    <h3>What about it?</h3>
     <span data-th-text="${k.body}"></span>
     <br>
     <br>
+    <h3>Latest review:</h3>
     <span data-th-text="${k.text}"></span>
     <br>
-    <br>
+    <!-- <br>
     <span data-th-text="${k.uuid}"></span>
-    <br>
+    <br> -->
+    <h3>Date of Review:</h3>
     <span data-th-text="${k.time}"></span>
     <br>
+    <h3>Rating</h3>
     <span data-th-text="${k.rating}"></span>
    <span hidden="true" name="uuid" value="${k.uuid}"><span>
+
+    <input class="checkbox" data-th-value="${k.uuid}" name="checkbox"> 
+
+    <button type="submit">Save</button>
    </div>
 </form>
 </body>

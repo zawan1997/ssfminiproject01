@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
-import vttp2022.ssfminiproject01.ssfproj.Services.UserService;
 
 @Controller
-@RequestMapping(path = { "places" })
+@RequestMapping(path = {"places"})
 public class LocationController {
 
     // after searching location, user will select choice. checkbox will determine
@@ -36,15 +35,15 @@ public class LocationController {
 
     @GetMapping
     @RequestMapping("/saveLocPerUser")
-    public String gesaveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpServletRequest request) {
+    public String saveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpServletRequest request) {
         System.out.println("uuid " + uuid);
         if (request.getSession().getAttribute("userid") != null) {
             String userID = request.getSession().getAttribute("userid").toString();
             lSv.saveLocationForUser(userID, uuid);
-            return "savedLocationSuccess";
+            return "locationsperuser";
         } else {
             System.out.println("Not logged in currently;");
-            return "usernotloggedin";
+            return "login";
         }
 
     }
@@ -59,13 +58,4 @@ public class LocationController {
         return "locationsperuser";
     }
 
-    // @GetMapping
-    // @RequestMapping("/validSearch")
-    // public String getWeatherWithValidName(Model model, @RequestParam String term,
-    // @RequestParam String userID) {
-    // List<Location> locations = lSv.getLocationWithName(term, userID);
-    // model.addAttribute("term", term);
-    // model.addAttribute("location", locations);
-    // return "locations";
-    // }
 }

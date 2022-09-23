@@ -17,10 +17,11 @@ public class UserService {
     @Autowired
     private MainRepo mRepo;
 
-    //account creation
+    //Account creation
     public boolean createUser(String userData) {
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
         UserCreateRequest req = UserCreateRequest.create(jo);
+        //userData vs String username, Sitnr password
 
         //For user to request, must be registered 
         boolean successfulRegistration = mRepo.saveUser(req.getUserID(), req.getPassword());
@@ -33,7 +34,7 @@ public class UserService {
         return successfulRegistration;
     }
 
-    //logging in
+    //Logging in
     public boolean login(String userData) {
 
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();

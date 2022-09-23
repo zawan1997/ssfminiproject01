@@ -3,7 +3,6 @@ package vttp2022.ssfminiproject01.ssfproj.Controllers;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +24,9 @@ public class UserController {
     public String createUser(Model model, @RequestBody String userData) {
         boolean res = uSvc.createUser(userData);
         if(res){
-            return "redirect:/index";
+            return "login";
         } else {
-            return "UserResponseRegisterFail";
+            return "redirect:/register";
         }
     }
 
@@ -48,7 +47,7 @@ public class UserController {
         boolean isValid = uSvc.logout(userID);
         
         if(isValid)
-            return "redirect:/index";
+            return "logoutpage";
         return "UserLogoutFailure";
     }
 }

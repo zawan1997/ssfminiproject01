@@ -38,6 +38,7 @@ public class LocationService {
 
     private Map<String, String> locationMap = null;
 
+    //Unused
     public List<Location> saveLocationtoList(String location, String userID) {
         if (userID.length() > 0) {
             String userName = userID;
@@ -53,6 +54,7 @@ public class LocationService {
         }
     }
 
+    //Checking if user is logged in before approving the save
     public boolean saveLocationForUser(String userID, String locationUuid) {
 
         if (userID.length() > 0) {
@@ -70,13 +72,14 @@ public class LocationService {
         }
     }
 
+    // Getting saved locations per user from Redis
     public List<Location> getLocationPerUser(String userID) {
         List<Location> list = new LinkedList<>();
 
         String locationIDListStr = mainRepo.getUserLocationMap(userID);
         String[] locationList = locationIDListStr.split("[,]", 0);
 
-        // we need to split this locationID list by comma
+        // We need to split locationID list by comma
         for (String locationUuid : locationList) {
             String payload = mainRepo.getLocation(locationUuid);
             Location loc = new Location();
@@ -101,12 +104,9 @@ public class LocationService {
 
     public List<Location> getLocation(String location) {
 
-        // Only getting in the saved items page
-        // Optional<String> opt = mainRepo.get(location);
         String payload;
         locationMap = new HashMap<>();
 
-        // if (opt.isEmpty()) {
         System.out.println("Getting fresh from Location API");
         String url = UriComponentsBuilder.fromUriString(URL)
                 .queryParam("keyword", location)
@@ -124,12 +124,6 @@ public class LocationService {
         }
 
         payload = resp.getBody();
-        // System.out.println("payload" + payload);
-
-        // mainRepo.save(location, payload);
-        // } else {
-        // payload = opt.get();
-        // }
 
         // Wanted properties are in different parts of the Json File
         Reader strReader = new StringReader(payload);
@@ -139,9 +133,7 @@ public class LocationService {
 
         // Attempting to get all things that are directly in Data
         List<Location> list = new LinkedList<>();
-        // try {
         System.out.println("There are " + data.size() + "  records");
-        // System.out.println("Data"+data+"EOF");
         for (int i = 0; i < data.size(); i++) {
 
             Location loc = new Location();
@@ -199,51 +191,11 @@ public class LocationService {
             locationMap.put(locationUuid, payLoadPerLocation);
         }
 
-        // }catch (Exception ex){
-        // System.err.printf("Error: %s\n", ex.getMessage());
-        // return Collections.emptyList();
-        // }
-
-        // //
-        // if (loc.getName().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getUuid().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getBody().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getPrimaryContactNo().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getAuthorName().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getOpenTime().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getCloseTime().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getText().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getTime().equals(" ")) {
-        // return null;
-        // }
-        // if (loc.getRating() <0) {
-        // return null;
-        // }
-        // if (loc.getLibraryUuid().equals(" ")) {
-        // return null;
-        // }
-
-        // JsonObject locJsonObject = loc.toJson();
-
         return list;
     }
 
+    // Replacing all empty Strings with NA
+    // Attempt to not return anything at all if 1 is NA
     private String getProperText(String text) {
         String returnValue = "NA";
 
@@ -254,14 +206,14 @@ public class LocationService {
         return returnValue;
     }
 
+    // Checking if the array exists
     private boolean hasData(JsonArray arr) {
         return arr.size() > 0;
     }
 
+    // Method to clean up all HTML traces from the result
     private String cleanup(String s) {
         String clean = s.replaceAll("\\<.*?>", "").replace("&nbsp;", "");
-        // .replace("<p>", "")
-        // .replace("<br>", "");
-        return clean;        
+        return clean;
     }
 }
