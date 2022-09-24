@@ -3,6 +3,7 @@ package vttp2022.ssfminiproject01.ssfproj.Controllers;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,11 +36,15 @@ public class LocationController {
 
     @GetMapping
     @RequestMapping("/saveLocPerUser")
-    public String saveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpServletRequest request) {
+    public String saveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpSession session) {
         System.out.println("uuid " + uuid);
-        if (request.getSession().getAttribute("userid") != null) {
-            String userID = request.getSession().getAttribute("userid").toString();
+        System.out.println("Current User : "+session.getAttribute("userID"));
+        if (session.getAttribute("userID") != null) {
+            String userID = session.getAttribute("userID").toString();
             lSv.saveLocationForUser(userID, uuid);
+            List<Location> list = lSv.getLocationPerUser(userID);
+            model.addAttribute("userid", userID);
+            model.addAttribute("list", list);
             return "locationsperuser";
         } else {
             System.out.println("Not logged in currently;");
@@ -50,12 +55,30 @@ public class LocationController {
 
     @GetMapping
     @RequestMapping("/getLocPerUser")
-    public String getLocationForUser(Model model,
-            @RequestParam(name = "userid") String userid) {
-        List<Location> list = lSv.getLocationPerUser(userid);
-        model.addAttribute("userid", userid);
-        model.addAttribute("list", list);
-        return "locationsperuser";
+    public String getLocationForUser(Model model, HttpSession session) {
+        String userID = null;
+        if(session.getAttribute("userID")!=null)
+        {
+            userID = session.getAttribute("userID").toString();
+            List<Location> list = lSv.getLocationPerUser(userID);
+            if(list.size()>0)
+            {
+            model.addAttribute("userid", userID);
+            model.addAttribute("list", list);
+            return "locationsperuser";
+            }
+            else{
+                System.out.println("No location saved");
+                return "nolocation";
+            }
+            
+            
+        }
+        else{
+            return "login";
+        }
+            
+       
     }
 
 }

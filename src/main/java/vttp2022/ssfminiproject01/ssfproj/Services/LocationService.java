@@ -62,7 +62,7 @@ public class LocationService {
                 System.out.println("User is not User" + userID);
                 return false;
             } else {
-                System.out.println("User is valid" + userID);
+                System.out.println("User is valid " + userID);
                 String payload = locationMap.get(locationUuid);
                 mainRepo.saveUserLocationMap(userID, locationUuid, payload);
                 return true;
@@ -77,6 +77,11 @@ public class LocationService {
         List<Location> list = new LinkedList<>();
 
         String locationIDListStr = mainRepo.getUserLocationMap(userID);
+        System.out.println("location for userid  "+userID+"   "+locationIDListStr);
+        if(locationIDListStr == null || locationIDListStr.isEmpty() || locationIDListStr.isBlank())
+        {
+            return list;
+        }
         String[] locationList = locationIDListStr.split("[,]", 0);
 
         // We need to split locationID list by comma
@@ -216,4 +221,7 @@ public class LocationService {
         String clean = s.replaceAll("\\<.*?>", "").replace("&nbsp;", "");
         return clean;
     }
+
+    //REST Controller method
+   
 }

@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <form action = "/places/saveLocPerUser" method="get">
+   
    <div data-th-each="k:${list}">
-
+    <form action = "/places/saveLocPerUser" method="get">
     <br>
     <strong data-th-text="${k.name}"></strong>
     <br>
@@ -29,12 +29,12 @@
     <br>
     <h3>Rating</h3>
     <span data-th-text="${k.rating}"></span>
-   <span hidden="true" name="uuid" value="${k.uuid}"><span>
+  
 
-    <input class="checkbox" data-th-value="${k.uuid}" name="checkbox"> 
-
-    <button type="submit">Save</button>
+   <button type="submit" data-th-value="${k.uuid}" name="uuid">Save</button>
+ </form> 
+    <!--span hidden="true" name="uuid" value="${k.uuid}"><span-->
    </div>
-</form>
+
 </body>
 </html>

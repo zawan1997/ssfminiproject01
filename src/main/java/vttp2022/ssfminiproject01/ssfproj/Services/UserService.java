@@ -20,6 +20,7 @@ public class UserService {
     //Account creation
     public boolean createUser(String userData) {
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
+        //Creating a JSON object with the user details
         UserCreateRequest req = UserCreateRequest.create(jo);
         //userData vs String username, Sitnr password
 
@@ -60,4 +61,8 @@ public class UserService {
         boolean loggingOut = mRepo.logoutUser(userID);
         return loggingOut;
     }
+
+    // public boolean userValidity(String userID) {
+    //     boolean isvalid= mRepo.isValidUser(userID, password)
+    // }
 }

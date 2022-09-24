@@ -37,13 +37,15 @@ public class MainRepo {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
         // if this userid already in redis then get the locationId and append the new ID and save back.
-        String value = valueOp.get(userid.toString().toLowerCase());
+        String locationKey = "loc"; // as we have userid as key already in redis because we store used and password, so to save lcoation we will append loc to userid
+        String  userKey = userid.toString().toLowerCase()+locationKey;
+        String value = valueOp.get(userKey);
         if(value == null)
-            valueOp.set(userid.toString().toLowerCase(), locationUuid.toString().toLowerCase());
+            valueOp.set(userKey, locationUuid.toString().toLowerCase());
         else
         {
             value = value + "," + locationUuid.toString().toLowerCase();
-            valueOp.set(userid.toString().toLowerCase(), value);
+            valueOp.set(userKey, value);
         }
 
         saveLocation(locationUuid, payload);
@@ -52,7 +54,9 @@ public class MainRepo {
     public String getUserLocationMap(String userid) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
-        String value = valueOp.get(userid.toString().toLowerCase());
+        String locationKey = "loc"; // as we have userid as key already in redis because we store used and password, so to save lcoation we will append loc to userid
+        String  userKey = userid.toString().toLowerCase()+locationKey;
+        String value = valueOp.get(userKey);
         return value;
     }
 
@@ -122,5 +126,9 @@ public class MainRepo {
         System.out.println( "User is currently NOT logged In");
         return false;
     }
+
+    // public boolean validUserID(String userID) {
+
+    // }
 
 }
