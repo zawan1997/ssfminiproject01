@@ -38,73 +38,13 @@ public class LocationService {
 
     private Map<String, String> locationMap = null;
 
-    //Unused
-    public List<Location> saveLocationtoList(String location, String userID) {
-        if (userID.length() > 0) {
-            String userName = userID;
-            if (!mainRepo.isLoggedInUser(userName)) {
-                System.out.println("User is not User" + userName);
-                return null;
-            } else {
-                System.out.println("User is valid" + userName);
-                return getLocation(location);
-            }
-        } else {
-            return getLocation(location);
-        }
-    }
+    // Checking if user is logged in before approving the save
+    public void saveLocationForUser(String userID, String locationUuid) {
 
-    //Checking if user is logged in before approving the save
-    public boolean saveLocationForUser(String userID, String locationUuid) {
-
-        if (userID.length() > 0) {
-            if (!mainRepo.isLoggedInUser(userID)) {
-                System.out.println("User is not User" + userID);
-                return false;
-            } else {
-                System.out.println("User is valid " + userID);
-                String payload = locationMap.get(locationUuid);
-                mainRepo.saveUserLocationMap(userID, locationUuid, payload);
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    // Getting saved locations per user from Redis
-    public List<Location> getLocationPerUser(String userID) {
-        List<Location> list = new LinkedList<>();
-
-        String locationIDListStr = mainRepo.getUserLocationMap(userID);
-        System.out.println("location for userid  "+userID+"   "+locationIDListStr);
-        if(locationIDListStr == null || locationIDListStr.isEmpty() || locationIDListStr.isBlank())
-        {
-            return list;
-        }
-        String[] locationList = locationIDListStr.split("[,]", 0);
-
-        // We need to split locationID list by comma
-        for (String locationUuid : locationList) {
-            String payload = mainRepo.getLocation(locationUuid);
-            Location loc = new Location();
-            Reader strReader = new StringReader(payload);
-            JsonReader jsonReader = Json.createReader(strReader);
-            JsonObject results = jsonReader.readObject();
-            loc.setName(results.getString("name"));
-            loc.setBody(results.getString("body"));
-            loc.setPrimaryContactNo(results.getJsonObject("contact").getString("primaryContactNo"));
-            loc.setAuthorName(results.getJsonArray("reviews").getJsonObject(0).getString("authorName"));
-            loc.setOpenTime(results.getJsonArray("businessHour").getJsonObject(0).getString("openTime"));
-            loc.setCloseTime(results.getJsonArray("businessHour").getJsonObject(0).getString("closeTime"));
-            loc.setText(results.getJsonArray("reviews").getJsonObject(0).getString("text"));
-            loc.setTime(results.getJsonArray("reviews").getJsonObject(0).getString("time"));
-            loc.setRating(results.getJsonArray("reviews").getJsonObject(0).getInt("rating"));
-            loc.setLibraryUuid(results.getJsonArray("images").getJsonObject(0).getString("libraryUuid"));
-            list.add(loc);
-        }
-
-        return list;
+        // Map within a map to tag UserID with locationUUID and payload in repo
+        System.out.println("User is valid " + userID);
+        String payload = locationMap.get(locationUuid);
+        mainRepo.saveUserLocationMap(userID, locationUuid, payload);
     }
 
     public List<Location> getLocation(String location) {
@@ -192,8 +132,34 @@ public class LocationService {
             System.out.println("libraryUuid " + loc.getLibraryUuid());
             list.add(loc);
             String locationUuid = loc.getUuid();
-            String payLoadPerLocation = data.getJsonObject(i).toString();
+            String payLoadPerLocation = loc.toJson().toString();
             locationMap.put(locationUuid, payLoadPerLocation);
+        }
+
+        return list;
+    }
+
+    // Getting saved locations per user from Redis
+    public List<Location> getLocationPerUser(String userID) {
+        List<Location> list = new LinkedList<>();
+
+        String locationIDListStr = mainRepo.getUserLocationMap(userID);
+        System.out.println("location for userid  " + userID + "   " + locationIDListStr);
+        if (locationIDListStr == null || locationIDListStr.isEmpty() || locationIDListStr.isBlank()) {
+            return list;
+        }
+        String[] locationList = locationIDListStr.split("[,]", 0);
+
+        // We need to split locationID list by comma
+        for (String locationUuid : locationList) {
+            String payload = mainRepo.getLocation(locationUuid);
+            Location loc = new Location();
+
+            Reader strReader = new StringReader(payload);
+            JsonReader jsonReader = Json.createReader(strReader);
+            JsonObject results = jsonReader.readObject();
+            loc = Location.create(results);
+            list.add(loc);
         }
 
         return list;
@@ -222,6 +188,6 @@ public class LocationService {
         return clean;
     }
 
-    //REST Controller method
-   
+    // REST Controller method
+
 }

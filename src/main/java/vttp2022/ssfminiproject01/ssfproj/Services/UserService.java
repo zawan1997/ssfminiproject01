@@ -13,35 +13,34 @@ import vttp2022.ssfminiproject01.ssfproj.Repositories.MainRepo;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     private MainRepo mRepo;
 
-    //Account creation
+    // Account creation
     public boolean createUser(String userData) {
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
-        //Creating a JSON object with the user details
+        // Creating a JSON object with the user details
         UserCreateRequest req = UserCreateRequest.create(jo);
-        //userData vs String username, Sitnr password
+        // userData vs String username, Sitnr password
 
-        //For user to request, must be registered 
+        // For user to request, must be registered
         boolean successfulRegistration = mRepo.saveUser(req.getUserID(), req.getPassword());
-        if(successfulRegistration) {
+        if (successfulRegistration) {
             System.out.println("Successful Registration");
-        }
-        else {
+        } else {
             System.out.println("User already exists");
         }
         return successfulRegistration;
     }
 
-    //Logging in
+    // Logging in
     public boolean login(String userData) {
 
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
         UserLoginRequest req = UserLoginRequest.create(jo);
 
-        //checking if the user exists to allow login
+        // checking if the user exists to allow login
         boolean isValid = mRepo.isValidUser(req.getUserID(), req.getPassword());
         System.out.println("User ID" + req.getUserID());
         System.out.println("Password" + req.getPassword());
@@ -49,6 +48,8 @@ public class UserService {
         System.out.println("User Valid?" + isValid);
         return isValid;
     }
+
+    // To assign session number
     public String getUserID(String userData) {
 
         JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
@@ -57,12 +58,4 @@ public class UserService {
         return req.getUserID();
     }
 
-    public boolean logout(String userID) {
-        boolean loggingOut = mRepo.logoutUser(userID);
-        return loggingOut;
-    }
-
-    // public boolean userValidity(String userID) {
-    //     boolean isvalid= mRepo.isValidUser(userID, password)
-    // }
 }

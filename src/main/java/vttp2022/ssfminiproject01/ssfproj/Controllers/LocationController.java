@@ -2,7 +2,6 @@ package vttp2022.ssfminiproject01.ssfproj.Controllers;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
 
 @Controller
-@RequestMapping(path = {"places"})
+@RequestMapping(path = { "places" })
 public class LocationController {
 
     // after searching location, user will select choice. checkbox will determine
@@ -38,7 +37,7 @@ public class LocationController {
     @RequestMapping("/saveLocPerUser")
     public String saveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpSession session) {
         System.out.println("uuid " + uuid);
-        System.out.println("Current User : "+session.getAttribute("userID"));
+        System.out.println("Current User : " + session.getAttribute("userID"));
         if (session.getAttribute("userID") != null) {
             String userID = session.getAttribute("userID").toString();
             lSv.saveLocationForUser(userID, uuid);
@@ -57,28 +56,22 @@ public class LocationController {
     @RequestMapping("/getLocPerUser")
     public String getLocationForUser(Model model, HttpSession session) {
         String userID = null;
-        if(session.getAttribute("userID")!=null)
-        {
+        if (session.getAttribute("userID") != null) {
             userID = session.getAttribute("userID").toString();
             List<Location> list = lSv.getLocationPerUser(userID);
-            if(list.size()>0)
-            {
-            model.addAttribute("userid", userID);
-            model.addAttribute("list", list);
-            return "locationsperuser";
-            }
-            else{
+            if (list.size() > 0) {
+                model.addAttribute("userid", userID);
+                model.addAttribute("list", list);
+                return "locationsperuser";
+            } else {
                 System.out.println("No location saved");
                 return "nolocation";
             }
-            
-            
-        }
-        else{
+
+        } else {
             return "login";
         }
-            
-       
+
     }
 
 }
