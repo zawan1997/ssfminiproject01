@@ -8,7 +8,7 @@
 </head>
 <body>
    <a href ="/places/getLocPerUser">Saved Locations</a>
-   <a href="/user/logout">To logout</a>
+   <!-- <a href="/user/logout">To logout</a> -->
    
    <div data-th-each="k:${list}">
     <form action = "/places/saveLocPerUser" method="get">
@@ -20,6 +20,17 @@
     <span data-th-text="${k.body}"></span>
     <br>
     <br>
+    <h3>Open Time:</h3>
+    <span data-th-text="${k.openTime}"></span>
+    <br>
+    <h3>Closing Time:</h3>
+    <span data-th-text="${k.closeTime}"></span>
+    <br>
+    <h3>Contact Number:</h3>
+    <span data-th-text="${k.primaryContactNo}"></span>
+    <br>
+    <h3> Reviewer:</h3>
+    <span data-th-text="${k.authorName}"></span>
     <h3>Latest review:</h3>
     <span data-th-text="${k.text}"></span>
     <br>
@@ -32,9 +43,10 @@
     <h3>Rating</h3>
     <span data-th-text="${k.rating}"></span>
    
-    <img data-th-src="'https://hcti.io/v1/image/'+${k.libraryUuid}+'.png'" alt="">
-    <img src=" https://tih-api.stb.gov.sg/media/v1/download/uuid/101420b6075c8ca4cc6884c4621197d7e51?apikey=dpfSIKNvNGbvZahPsbVH3DUCAcM8WysA" alt="">
-  
+    <!-- <img data-th-src="'https://hcti.io/v1/image/'+${k.libraryUuid}+'.png'" alt=""> -->
+    <!-- <img data-th-src=" https://tih-api.stb.gov.sg/media/v1/download/uuid/'+${k.primaryFileMediumUuid}+'?apikey=dpfSIKNvNGbvZahPsbVH3DUCAcM8WysA" alt=""> -->
+  <br>
+  <br>
 
    <button type="submit" data-th-value="${k.uuid}" name="uuid">Save</button>
  </form> 

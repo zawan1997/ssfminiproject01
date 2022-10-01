@@ -123,13 +123,14 @@ public class LocationService {
             System.out.println("Time " + loc.getTime());
             System.out.println("Rating " + loc.getRating());
 
+            //attempt to replace the display name only later. UUID shareed between image and key
             if (hasData(data.getJsonObject(i).getJsonArray("images"))) {
-                loc.setLibraryUuid(getProperText(
-                        data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("libraryUuid")));
+                loc.setPrimaryFileMediumUuid(getProperText(
+                        data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("primaryFileMediumUuid")));
             } else {
-                loc.setLibraryUuid("NA");
+                loc.setPrimaryFileMediumUuid("NA");
             }
-            System.out.println("libraryUuid " + loc.getLibraryUuid());
+            System.out.println("primaryFileMediumUuid " + loc.getPrimaryFileMediumUuid());
             list.add(loc);
             String locationUuid = loc.getUuid();
             String payLoadPerLocation = loc.toJson().toString();
@@ -189,5 +190,6 @@ public class LocationService {
     }
 
     // REST Controller method
+    
 
 }
