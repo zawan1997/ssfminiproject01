@@ -14,9 +14,8 @@ public class Location {
     private int rating; // inside array Data>array reviews
     private String authorName; // inside array Data>array reviews
     private String time; // inside array Data>array reviews
-    //private String libraryUuid; //Change to primaryFileMediumUuid//
+    // private String libraryUuid; //Change to primaryFileMediumUuid//
     private String primaryFileMediumUuid;
-  
 
     private String uuid; // Key to save the location
 
@@ -37,11 +36,11 @@ public class Location {
     }
 
     // public String getLibraryUuid() {
-    //     return libraryUuid;
+    // return libraryUuid;
     // }
 
     // public void setLibraryUuid(String libraryUuid) {
-    //     this.libraryUuid = libraryUuid;
+    // this.libraryUuid = libraryUuid;
     // }
 
     public String getOpenTime() {
@@ -128,7 +127,7 @@ public class Location {
         loc.setText(jo.getString("text"));
         loc.setTime(jo.getString("time"));
         loc.setRating(jo.getInt("rating"));
-        //loc.setLibraryUuid(jo.getString("libraryUuid"));
+        // loc.setLibraryUuid(jo.getString("libraryUuid"));
         loc.setPrimaryFileMediumUuid("primaryFileMediumUuid");
         loc.setUuid(jo.getString("uuid"));
         return loc;
@@ -147,7 +146,7 @@ public class Location {
                 .add("text", text)
                 .add("time", time)
                 .add("rating", rating)
-                //.add("libraryUuid", libraryUuid)
+                // .add("libraryUuid", libraryUuid)
                 .add("uuid", uuid)
                 .add("primaryFileMediumUuid", primaryFileMediumUuid)
 

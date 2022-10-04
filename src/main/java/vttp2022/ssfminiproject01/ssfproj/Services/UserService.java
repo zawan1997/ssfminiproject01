@@ -49,13 +49,6 @@ public class UserService {
         return isValid;
     }
 
-    // To assign session number
-    public String getUserID(String userData) {
-
-        JsonObject jo = Json.createReader(new StringReader(userData)).readObject();
-        UserLoginRequest req = UserLoginRequest.create(jo);
-
-        return req.getUserID();
-    }
+    
 
 }

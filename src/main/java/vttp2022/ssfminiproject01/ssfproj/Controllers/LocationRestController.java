@@ -17,27 +17,35 @@ import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
 
 @RestController
-@RequestMapping(path="/listing", produces=MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/listing", produces = MediaType.APPLICATION_JSON_VALUE)
 public class LocationRestController {
 
     @Autowired
     private LocationService locationSvc;
 
-    @GetMapping(value="{userid}")
-    public ResponseEntity <String> getRestLocation(@PathVariable String userid) {
-       List <Location> loc = locationSvc.getLocationPerUser(userid);
+    @GetMapping(path = "{userid}")
+    public ResponseEntity<String> getRestLocation(@PathVariable String userid) {
+        List<Location> list = locationSvc.getLocationPerUser(userid);
 
-        if (loc==null) {
+        if (list.isEmpty()) {
             JsonObject err = Json.createObjectBuilder()
-                .add("error", "No Locations saved for user %s".formatted(userid))
-                .build();
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(err.toString());
-        } else {
-        return ResponseEntity.ok(((Location) loc).toJson().toString());
+                    .add("error", "No Locations saved for user %s".formatted(userid))
+                    .build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(err.toString());
         }
-
+        return ResponseEntity.ok(((Location) list).toJson().toString());
 
     }
-    
+
+    // List<Location> list = lSv.getLocationPerUser(userID);
+    // if (list.size() > 0) {
+    // model.addAttribute("userid", userID);
+    // model.addAttribute("list", list);
+    // return "locationsperuser";
+    // } else {
+    // System.out.println("No location saved");
+    // return "nolocation";
+    // }
+
 }

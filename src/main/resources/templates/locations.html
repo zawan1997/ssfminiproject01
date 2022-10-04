@@ -1,57 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-   <a href ="/places/getLocPerUser">Saved Locations</a>
-   <!-- <a href="/user/logout">To logout</a> -->
-   
-   <div data-th-each="k:${list}">
-    <form action = "/places/saveLocPerUser" method="get">
-    <br>
-    <strong data-th-text="${k.name}"></strong>
-    <br>
-    <br>
-    <h3>What about it?</h3>
-    <span data-th-text="${k.body}"></span>
-    <br>
-    <br>
-    <h3>Open Time:</h3>
-    <span data-th-text="${k.openTime}"></span>
-    <br>
-    <h3>Closing Time:</h3>
-    <span data-th-text="${k.closeTime}"></span>
-    <br>
-    <h3>Contact Number:</h3>
-    <span data-th-text="${k.primaryContactNo}"></span>
-    <br>
-    <h3> Reviewer:</h3>
-    <span data-th-text="${k.authorName}"></span>
-    <h3>Latest review:</h3>
-    <span data-th-text="${k.text}"></span>
-    <br>
-    <!-- <br>
-    <span data-th-text="${k.uuid}"></span>
-    <br> -->
-    <h3>Date of Review:</h3>
-    <span data-th-text="${k.time}"></span>
-    <br>
-    <h3>Rating</h3>
-    <span data-th-text="${k.rating}"></span>
-   
-    <!-- <img data-th-src="'https://hcti.io/v1/image/'+${k.libraryUuid}+'.png'" alt=""> -->
-    <!-- <img data-th-src=" https://tih-api.stb.gov.sg/media/v1/download/uuid/'+${k.primaryFileMediumUuid}+'?apikey=dpfSIKNvNGbvZahPsbVH3DUCAcM8WysA" alt=""> -->
-  <br>
-  <br>
 
-   <button type="submit" data-th-value="${k.uuid}" name="uuid">Save</button>
- </form> 
-    <!--span hidden="true" name="uuid" value="${k.uuid}"><span-->
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+   <title>Document</title>
+   <style>
+      body {
+         font-family: 'Poppins', sans-serif;
+         font-weight: 400;
+         background-color: #fff;
+         font-size: 16px;
+         -ms-text-size-adjust: 100%;
+         -webkit-font-smoothing: antialiased;
+         -moz-osx-font-smoothing: grayscale;
+      }
+   </style>
+</head>
+
+<body>
+   <a href="/places/getLocPerUser">Saved Locations</a>
+   <!-- <a href="/user/logout">To logout</a> -->
+
+   <div data-th-each="k:${list}">
+      <form action="/places/saveLocPerUser" method="get">
+         <br>
+         <h1><strong data-th-text="${k.name}"></strong></h1>
+         <br>
+         <br>
+
+         <h1>What about it?</h1>
+         <span data-th-text="${k.body}"></span>
+         <br>
+         
+         <h5>Latest review:</h5>
+         <span data-th-text="${k.text}"></span>
+         <br>
+         <h5> Reviewer:</h5>
+         <span data-th-text="${k.authorName}"></span>
+         <br>
+         <h5>Date of Review:</h5>
+         <span data-th-text="${k.time}"></span>
+         <br>
+         <h5>Rating</h5>
+         <span data-th-text="${k.rating}"></span>
+         <br>
+         <h5>Open Time:</h5>
+         <span data-th-text="${k.openTime}"></span>
+         <br>
+         <h5>Closing Time:</h5>
+         <span data-th-text="${k.closeTime}"></span>
+         <br>
+         <h5>Contact Number:</h5>
+         <span data-th-text="${k.primaryContactNo}"></span>
+         <br>
+
+         <!-- <h3>Image:</h3>
+         <span data-th-text="${k.rating}"></span> -->
+         <button type="submit" data-th-value="${k.uuid}" name="uuid">Save</button>
+      </form>
+
    </div>
 
 </body>
+
 </html>
