@@ -17,6 +17,26 @@
          -webkit-font-smoothing: antialiased;
          -moz-osx-font-smoothing: grayscale;
       }
+      h5 {
+            font-family: 'Lucida Console', sans-serif;
+            font-weight: 400;
+            background-color: #fff;
+            font-size: 30px;
+            color: #fff;
+            background-color: #22b3c1;
+            border: 1px solid #22b3c1;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 200;
+            margin-top: 3px;
+        }
+        a {
+            display: inline-block;
+            color: #fff;
+            background-color: #22b3c1;
+            border: 1px solid #22b3c1;
+            border-radius: 10px;
+        }
    </style>
 </head>
 
@@ -27,11 +47,11 @@
    <div data-th-each="k:${list}">
       <form action="/places/saveLocPerUser" method="get">
          <br>
-         <h1><strong data-th-text="${k.name}"></strong></h1>
+         <h2><strong data-th-text="${k.name}"></strong></h2>
          <br>
-         <br>
+         
 
-         <h1>What about it?</h1>
+         <h5>What about it?</h5>
          <span data-th-text="${k.body}"></span>
          <br>
          

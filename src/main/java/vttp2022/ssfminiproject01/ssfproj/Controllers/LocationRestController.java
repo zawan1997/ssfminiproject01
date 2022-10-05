@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
@@ -34,18 +35,16 @@ public class LocationRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(err.toString());
         }
-        return ResponseEntity.ok(((Location) list).toJson().toString());
+
+      
+        JsonArray jray = Json.createArrayBuilder()
+                .add(list.toString())
+                .build(); 
+                
+            
+            
+        return ResponseEntity.ok((jray).toString());
 
     }
-
-    // List<Location> list = lSv.getLocationPerUser(userID);
-    // if (list.size() > 0) {
-    // model.addAttribute("userid", userID);
-    // model.addAttribute("list", list);
-    // return "locationsperuser";
-    // } else {
-    // System.out.println("No location saved");
-    // return "nolocation";
-    // }
 
 }
