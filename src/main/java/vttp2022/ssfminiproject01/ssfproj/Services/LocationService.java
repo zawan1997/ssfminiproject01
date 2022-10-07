@@ -36,6 +36,7 @@ public class LocationService {
     @Autowired
     private MainRepo mainRepo;
 
+    // null because its temporarily stored in map until saved
     private Map<String, String> locationMap = null;
 
     // Checking if user is logged in before approving the save
@@ -123,10 +124,12 @@ public class LocationService {
             System.out.println("Time " + loc.getTime());
             System.out.println("Rating " + loc.getRating());
 
-            //attempt to replace the display name only later. UUID shareed between image and key
+            // attempt to replace the display name only later. UUID shareed between image
+            // and key
             if (hasData(data.getJsonObject(i).getJsonArray("images"))) {
                 loc.setPrimaryFileMediumUuid(getProperText(
-                        data.getJsonObject(i).getJsonArray("images").getJsonObject(0).getString("primaryFileMediumUuid")));
+                        data.getJsonObject(i).getJsonArray("images").getJsonObject(0)
+                                .getString("primaryFileMediumUuid")));
             } else {
                 loc.setPrimaryFileMediumUuid("NA");
             }
@@ -134,6 +137,7 @@ public class LocationService {
             list.add(loc);
             String locationUuid = loc.getUuid();
             String payLoadPerLocation = loc.toJson().toString();
+            // put in map to store and get following userid later
             locationMap.put(locationUuid, payLoadPerLocation);
         }
 
@@ -149,9 +153,9 @@ public class LocationService {
         if (locationIDListStr == null || locationIDListStr.isEmpty() || locationIDListStr.isBlank()) {
             return list;
         }
+        // Split locationID list by comma so they dont get jumbled
         String[] locationList = locationIDListStr.split("[,]", 0);
 
-        // We need to split locationID list by comma
         for (String locationUuid : locationList) {
             String payload = mainRepo.getLocation(locationUuid);
             Location loc = new Location();
@@ -188,8 +192,5 @@ public class LocationService {
         String clean = s.replaceAll("\\<.*?>", "").replace("&nbsp;", "");
         return clean;
     }
-
-    // REST Controller method
-    
 
 }

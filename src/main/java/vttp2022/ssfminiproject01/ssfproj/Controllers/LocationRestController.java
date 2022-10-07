@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import vttp2022.ssfminiproject01.ssfproj.Models.Location;
 import vttp2022.ssfminiproject01.ssfproj.Services.LocationService;
@@ -35,15 +36,23 @@ public class LocationRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(err.toString());
         }
+        //To use for loop for Json Array
+         Location loc = new Location();
+         JsonArray arr ;
+         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
+        for (int i=0; i<list.size(); i++){
+           loc = new Location();
+           loc = list.get(i);      
+         JsonObject uuids = Json.createObjectBuilder()
+         //.add("userid", userid)
+         .add("uuid "+i, loc.toJson())
+         .build();
+         arrBuilder.add(uuids);
+        }
+        arr= arrBuilder.build();
+        
 
-      
-        JsonArray jray = Json.createArrayBuilder()
-                .add(list.toString())
-                .build(); 
-                
-            
-            
-        return ResponseEntity.ok((jray).toString());
+        return ResponseEntity.ok(arr.toString());
 
     }
 

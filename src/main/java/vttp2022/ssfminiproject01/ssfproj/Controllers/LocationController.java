@@ -33,6 +33,7 @@ public class LocationController {
         return "locations";
     }
 
+    //tie in with HTTP servlet if can to verfiy the login status 
     @GetMapping
     @RequestMapping("/saveLocPerUser")
     public String saveLocationForLoggedUser(Model model, @RequestParam String uuid, HttpSession session) {
@@ -52,6 +53,7 @@ public class LocationController {
 
     }
 
+    //tie in with HTTP servlet if can to verfiy the login status 
     @GetMapping
     @RequestMapping("/getLocPerUser")
     public String getLocationForUser(Model model, HttpSession session) {
