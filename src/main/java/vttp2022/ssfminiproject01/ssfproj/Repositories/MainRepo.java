@@ -17,8 +17,7 @@ public class MainRepo {
     @Qualifier("redislab")
     private RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
 
-    // saving the Location UUID as the key and information as payload like name,
-    // uuid etc
+    // saving the Location UUID as the key and information as payload 
     public void saveLocation(String locationUuid, String payload) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
@@ -35,43 +34,42 @@ public class MainRepo {
         return value;
     }
 
-    // For given user we will save the mapping as userid and locations with common
-    // seprated and prefix "loc"
+    // Mapping userid as key for both location and payload
     public void saveUserLocationMap(String userid, String locationUuid, String payload) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
         // if this userid already in redis then take the locationId and save back.
         String locationKey = "loc";
-        // Because we dont want to overrride UserID we just replace with loC
-        // Calling userID will just bring password back
+        // Add loc so password doesnt get overritten
         String userKey = userid.toString().toLowerCase() + locationKey;
         String value = valueOp.get(userKey);
+        //If not logged in, cannot save 
         if (value == null)
             valueOp.set(userKey, locationUuid.toString().toLowerCase());
+            //seperating each uuid with a comma so they dont get mixed
         else {
             value = value + "," + locationUuid.toString().toLowerCase();
             valueOp.set(userKey, value);
         }
-
+        
         saveLocation(locationUuid, payload);
     }
 
-    // To retrieve all common separated location id for given user.
+    // To retrieve all clocation id for user.
     public String getUserLocationMap(String userid) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
-        String locationKey = "loc"; // as we have userid as key already in redis because we store used and password,
-                                    // so to save lcoation we will append loc to userid
+        // getting location from userloc
+        String locationKey = "loc"; 
         String userKey = userid.toString().toLowerCase() + locationKey;
         String value = valueOp.get(userKey);
         return value;
     }
 
-    // To register a user in system with userid and password
+    // Registering user
     public boolean saveUser(String userID, String password) {
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
-        // Checking if user is already registered. If yes, then dont need to save just
-        // get
+        // Checking if user is already registered
         System.out.println("Check if user is already registered" + valueOp.get(userID));
         if (valueOp.get(userID) == null) {
             valueOp.set(userID.toLowerCase(), password);
@@ -82,7 +80,7 @@ public class MainRepo {
             return false;
     }
 
-    // Checking if user is valid to "unlock" saving items function"
+    // Checking if user is valid to unlock saving items function"
     public boolean isValidUser(String userID, String password) {
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();
         System.out.println(valueOp.get(userID.toLowerCase()));

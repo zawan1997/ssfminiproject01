@@ -38,14 +38,31 @@
 </head>
 
 <body>
-    <a href="../register.html">Register</a>
+    <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="../register.html">Register</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+    <!-- <a href="../register.html">Register</a> -->
     <br>
     <br>
     <h3> Log in!</h3>
     <form method="POST" action="/user/login">
-        <input type="text" name="userID" required>
-        <input type="text" name="password" required>
-        <button type="submit">Save</button>
+        <p>
+        Username:<input type="text" name="userID" required />
+    </p>
+        <br>
+        <br>
+        <p>
+        Password:<input type="password" name="password" required />
+    </p>
+        <br>
+        <button type="submit">Log In</button>
     </form>
 
 </body>

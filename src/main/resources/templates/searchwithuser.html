@@ -9,6 +9,7 @@
     <title>Document</title>
     <style>
         button {
+            font-family: 'Lucida Console', sans-serif;
             font-size: 14px;
             color: #fff;
             background-color: #22b3c1;
@@ -39,10 +40,18 @@
 </head>
 
 <body>
-    <a href="/places/getLocPerUser">Saved Locations</a>
-    <br>
-    <br>
-    <a href="/user/logout">To logout</a>
+    <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href ="/places/getLocPerUser">Saved Locations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/logout">To logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     <br>
     <br>
     <h1>Where do you want to go?</h1>

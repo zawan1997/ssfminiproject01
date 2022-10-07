@@ -39,14 +39,7 @@ public class LocationService {
     // null because its temporarily stored in map until saved
     private Map<String, String> locationMap = null;
 
-    // Checking if user is logged in before approving the save
-    public void saveLocationForUser(String userID, String locationUuid) {
-
-        // Map within a map to tag UserID with locationUUID and payload in repo
-        System.out.println("User is valid " + userID);
-        String payload = locationMap.get(locationUuid);
-        mainRepo.saveUserLocationMap(userID, locationUuid, payload);
-    }
+   
 
     public List<Location> getLocation(String location) {
 
@@ -144,17 +137,26 @@ public class LocationService {
         return list;
     }
 
+    public void saveLocationForUser(String userID, String locationUuid) {
+
+        // Map within a map to tag UserID with locationUUID and payload in repo
+        System.out.println("User is valid " + userID);
+        //getting payloadPerLocation
+        String payload = locationMap.get(locationUuid);
+        mainRepo.saveUserLocationMap(userID, locationUuid, payload);
+    }
+
     // Getting saved locations per user from Redis
     public List<Location> getLocationPerUser(String userID) {
         List<Location> list = new LinkedList<>();
 
-        String locationIDListStr = mainRepo.getUserLocationMap(userID);
-        System.out.println("location for userid  " + userID + "   " + locationIDListStr);
-        if (locationIDListStr == null || locationIDListStr.isEmpty() || locationIDListStr.isBlank()) {
+        String locationIDList = mainRepo.getUserLocationMap(userID);
+        System.out.println("location for userid  " + userID + "   " + locationIDList);
+        if (locationIDList == null || locationIDList.isEmpty() || locationIDList.isBlank()) {
             return list;
         }
         // Split locationID list by comma so they dont get jumbled
-        String[] locationList = locationIDListStr.split("[,]", 0);
+        String[] locationList = locationIDList.split("[,]", 0);
 
         for (String locationUuid : locationList) {
             String payload = mainRepo.getLocation(locationUuid);

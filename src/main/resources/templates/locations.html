@@ -17,44 +17,56 @@
          -webkit-font-smoothing: antialiased;
          -moz-osx-font-smoothing: grayscale;
       }
+
       h5 {
-            font-family: 'Lucida Console', sans-serif;
-            font-weight: 400;
-            background-color: #fff;
-            font-size: 30px;
-            color: #fff;
-            background-color: #22b3c1;
-            border: 1px solid #22b3c1;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 200;
-            margin-top: 3px;
-        }
-        a {
-            display: inline-block;
-            color: #fff;
-            background-color: #22b3c1;
-            border: 1px solid #22b3c1;
-            border-radius: 10px;
-        }
+         font-family: 'Lucida Console', sans-serif;
+         font-weight: 400;
+         background-color: #fff;
+         font-size: 30px;
+         color: #fff;
+         background-color: #22b3c1;
+         border: 1px solid #22b3c1;
+         border-radius: 10px;
+         cursor: pointer;
+         font-weight: 200;
+         margin-top: 3px;
+      }
+
+      a {
+         font-family: 'Lucida Console', sans-serif;
+         display: inline-block;
+         color: #fff;
+         background-color: #22b3c1;
+         border: 1px solid #22b3c1;
+         border-radius: 10px;
+      }
    </style>
 </head>
 
 <body>
-   <a href="/places/getLocPerUser">Saved Locations</a>
+
+   <nav class="navbar navbar-expand-sm bg-light">
+      <div class="container-fluid">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/places/getLocPerUser">Saved Locations</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+   <!-- <a href="/places/getLocPerUser">Saved Locations</a> -->
    <!-- <a href="/user/logout">To logout</a> -->
+
 
    <div data-th-each="k:${list}">
       <form action="/places/saveLocPerUser" method="get">
          <br>
          <h2><strong data-th-text="${k.name}"></strong></h2>
          <br>
-         
-
          <h5>What about it?</h5>
          <span data-th-text="${k.body}"></span>
          <br>
-         
+
          <h5>Latest review:</h5>
          <span data-th-text="${k.text}"></span>
          <br>
@@ -67,6 +79,7 @@
          <h5>Rating</h5>
          <span data-th-text="${k.rating}"></span>
          <br>
+
          <h5>Open Time:</h5>
          <span data-th-text="${k.openTime}"></span>
          <br>
@@ -83,6 +96,7 @@
       </form>
 
    </div>
+
 
 </body>
 

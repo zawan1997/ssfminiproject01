@@ -38,14 +38,35 @@
             border: 1px solid #22b3c1;
             border-radius: 10px;
         }
+        h1 {
+            font-family: 'Lucida Console', sans-serif;
+            font-weight: 400;
+            color: black;
+            font-size: 30px;
+
+        }
 
     </style>
 </head>
 
 <body>
-    <a href ="/places/getLocPerUser">Saved Locations</a>
+
+    <nav class="navbar navbar-expand-sm bg-light">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href ="/places/getLocPerUser">Saved Locations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user/logout">To logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+    <!-- <a href ="/places/getLocPerUser">Saved Locations</a>
     <br>
-    <a href="/user/logout">To logout</a>
+    <a href="/user/logout">To logout</a> -->
     <br>
     <h1>Where do you want to go?</h1>
     <form form method="GET" action="/places/searchLocation">
