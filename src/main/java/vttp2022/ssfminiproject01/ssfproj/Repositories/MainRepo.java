@@ -43,7 +43,7 @@ public class MainRepo {
         // Add loc so password doesnt get overritten
         String userKey = userid.toString().toLowerCase() + locationKey;
         String value = valueOp.get(userKey);
-        //If not logged in, cannot save 
+        //If got no value then store normally then next one will be comma seperated
         if (value == null)
             valueOp.set(userKey, locationUuid.toString().toLowerCase());
             //seperating each uuid with a comma so they dont get mixed
@@ -55,7 +55,7 @@ public class MainRepo {
         saveLocation(locationUuid, payload);
     }
 
-    // To retrieve all clocation id for user.
+    // To retrieve all location id for user.
     public String getUserLocationMap(String userid) {
 
         ValueOperations<String, String> valueOp = redisTemplate.opsForValue();

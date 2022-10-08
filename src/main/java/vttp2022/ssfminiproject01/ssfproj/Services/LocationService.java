@@ -149,7 +149,7 @@ public class LocationService {
     // Getting saved locations per user from Redis
     public List<Location> getLocationPerUser(String userID) {
         List<Location> list = new LinkedList<>();
-
+         //to get locationuuid, payload map inside
         String locationIDList = mainRepo.getUserLocationMap(userID);
         System.out.println("location for userid  " + userID + "   " + locationIDList);
         if (locationIDList == null || locationIDList.isEmpty() || locationIDList.isBlank()) {
@@ -159,6 +159,7 @@ public class LocationService {
         String[] locationList = locationIDList.split("[,]", 0);
 
         for (String locationUuid : locationList) {
+           
             String payload = mainRepo.getLocation(locationUuid);
             Location loc = new Location();
 
