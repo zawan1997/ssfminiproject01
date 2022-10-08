@@ -155,7 +155,7 @@ public class LocationService {
         if (locationIDList == null || locationIDList.isEmpty() || locationIDList.isBlank()) {
             return list;
         }
-        // Split locationID list by comma so they dont get jumbled
+        // Split locationID putting them into indiv arrays
         String[] locationList = locationIDList.split("[,]", 0);
 
         for (String locationUuid : locationList) {
