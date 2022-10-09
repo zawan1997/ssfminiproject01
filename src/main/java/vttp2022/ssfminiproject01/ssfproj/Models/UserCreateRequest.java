@@ -23,9 +23,7 @@ public class UserCreateRequest {
         this.password = password;
     }
 
-    // JSON to model
-    // creating a JSON object with the following contents
-    // creating as a java object becuase java cannot read JSON directly
+   
     public static UserCreateRequest create(JsonObject jo) {
         UserCreateRequest w = new UserCreateRequest();
         w.setUserID(jo.getString("userID"));

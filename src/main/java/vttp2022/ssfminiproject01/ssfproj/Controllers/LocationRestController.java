@@ -36,7 +36,7 @@ public class LocationRestController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(err.toString());
         }
-        //To use for loop for Json Array
+        //for loop for Json Array
          Location loc = new Location();
          JsonArray arr ;
          JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
